@@ -20,3 +20,6 @@
 
 [fast.ai](https://docs.fast.ai/)
 - Training
+
+[timm](https://huggingface.co/docs/hub/timm)
+- Inference
