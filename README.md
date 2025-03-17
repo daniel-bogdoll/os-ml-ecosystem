@@ -18,3 +18,5 @@
 [MMDetection](https://github.com/open-mmlab/mmdetection)
 - Training
 
+[fast.ai](https://docs.fast.ai/)
+- Training
