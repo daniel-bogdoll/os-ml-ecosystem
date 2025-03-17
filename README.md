@@ -26,6 +26,8 @@
 
 # Installation
 
+Tested with Ubuntu 24.04 through WSL2.
+
 ```
 python3 -m venv .venv
 source .venv/bin/activate
