@@ -8,6 +8,9 @@
 - Training
 - Zero-Shot Inference
 
+[timm](https://huggingface.co/docs/hub/timm)
+- Inference
+
 [Ultralytics](https://docs.ultralytics.com/de)
 - Training
 - Inference
@@ -21,5 +24,4 @@
 [fast.ai](https://docs.fast.ai/)
 - Training
 
-[timm](https://huggingface.co/docs/hub/timm)
-- Inference
+
