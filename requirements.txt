@@ -8,3 +8,4 @@ transformers==4.49.0
 datasets==3.4.1
 accelerate==1.5.2
 ultralytics==8.3.93
+supervision==0.25.1
