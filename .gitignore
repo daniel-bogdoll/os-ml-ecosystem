@@ -1,3 +1,4 @@
 .venv/
 trainer_output/
 utils/__pycache__/
+data_ultralytics/
