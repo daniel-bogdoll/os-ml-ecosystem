@@ -7,3 +7,4 @@ ipykernel==6.29.5
 transformers==4.49.0
 datasets==3.4.1
 accelerate==1.5.2
+ultralytics==8.3.93
