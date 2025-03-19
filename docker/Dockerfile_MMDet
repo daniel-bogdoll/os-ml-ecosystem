@@ -1,0 +1,78 @@
+FROM nvidia/cuda:11.3.1-devel-ubuntu20.04
+
+ARG DEBIAN_FRONTEND=noninteractive
+
+# install system packages
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+    ffmpeg \
+    git \
+    libgl1-mesa-glx \
+    libsm6 \
+    libxext6 \
+    wget \
+    pkg-config \
+    zip  \
+    g++  \
+    zlib1g-dev  \
+    unzip  \
+    python3  \
+    python3-pip \
+    build-essential \
+    curl \
+    && rm -rf /var/lib/apt/lists/*
+
+
+SHELL ["/bin/bash", "-c"]
+
+RUN curl -sLo ~/miniconda.sh https://repo.continuum.io/miniconda/Miniconda3-py38_23.11.0-2-Linux-x86_64.sh \
+    && chmod +x ~/miniconda.sh \
+    && ~/miniconda.sh -b -p /opt/conda \
+    && rm ~/miniconda.sh
+
+ENV PATH=/opt/conda/bin:$PATH
+
+RUN source /opt/conda/etc/profile.d/conda.sh \
+    && conda activate base \
+    && conda update -n base conda -y \
+    && conda install python=3.8 \
+    && python --version
+
+RUN source /opt/conda/etc/profile.d/conda.sh \
+    && conda init bash \
+    && conda config --set auto_activate_base true
+
+# ENV settings
+ENV FORCE_CUDA="1"
+ENV TORCH_CUDA_ARCH_LIST="6.0 6.1 7.0+PTX"
+ENV TORCH_NVCC_FLAGS="-Xfatbin -compress-all"
+ENV CMAKE_PREFIX_PATH="$(dirname $(which conda))/../"
+
+RUN conda install pytorch==1.10.1 torchvision==0.11.2 torchaudio==0.10.1 cudatoolkit=11.3 -c pytorch -c conda-forge
+
+# dev mode (for developement / debugging) with specific version; you can also only install MMDET only in dev mode
+# MM Environment ->Adapt
+ARG MMCV="2.1.0"
+ARG MMDET="3.3.0"
+ARG MMDET3D="1.4.0"
+RUN mkdir /deps
+RUN cd /deps \
+    && git clone https://github.com/open-mmlab/mmcv.git \
+    && cd mmcv \
+    && git checkout tags/v${MMCV} \
+    && MMCV_WITH_OPS=1 pip install -e .
+
+RUN cd /deps \
+    && git clone https://github.com/open-mmlab/mmdetection.git \
+    && cd mmdetection \
+    && git checkout tags/v${MMDET} \
+    && pip install -e .
+
+# if you just want to run stuff you can use to get the latest version
+# RUN pip install -U openmim
+# RUN mim install mmengine
+# RUN mim install "mmcv>=2.0.0"
+# RUN mim install mmdet
+
+# avoid error with distutils
+RUN pip install setuptools==59.5.0 Pillow==9.5.0 numba==0.53 numpy==1.23.5 yapf==0.32
