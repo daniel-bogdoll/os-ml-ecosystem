@@ -1,4 +1,7 @@
 .venv/
 trainer_output/
 utils/__pycache__/
-data_ultralytics/
+ultralytics_data/
+ultralytics_runs/
+yolo11n.pt
+yolo12n.pt
